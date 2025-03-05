@@ -43,7 +43,7 @@ const UserSchema = new mongoose_1.Schema({
     isVerified: { type: Boolean, default: false },
     verifyCode: { type: String },
     verifyCodeExpiry: { type: Date },
-    resetToken: { type: String, required: true },
+    resetToken: { type: String, default: "" },
     resetTokenExpiry: { type: Date },
     // ✅ Explicitly define top-level fields
     membership: { type: mongoose_1.Schema.Types.ObjectId, ref: "Membership" },

@@ -29,7 +29,7 @@ const UserSchema = new Schema<IUser>({
   isVerified: { type: Boolean, default: false },
   verifyCode: { type: String },
   verifyCodeExpiry: { type: Date },
-  resetToken: { type: String, required: true },
+  resetToken: { type: String ,default: "" },
   resetTokenExpiry: { type: Date },
 
   // ✅ Explicitly define top-level fields
