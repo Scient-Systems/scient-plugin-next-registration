@@ -34,25 +34,29 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const UserSchema = new mongoose_1.Schema({
+const PROJECT_TYPE = process.env.PROJECT_TYPE || "event-finder"; // Default to event-finder
+const userSchemaFields = {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     userName: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    role: { type: String, required: true, default: "user" },
     isVerified: { type: Boolean, default: false },
     verifyCode: { type: String },
     verifyCodeExpiry: { type: Date },
     resetToken: { type: String, default: "" },
-    resetTokenExpiry: { type: Date },
-    // ✅ Explicitly define top-level fields
-    membership: { type: mongoose_1.Schema.Types.ObjectId, ref: "Membership" },
-    businessCards: { type: [mongoose_1.Schema.Types.ObjectId], ref: "BusinessCard" },
-    contacts: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Contact" },
-    events: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Event" }],
-    complaints: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Complaint" }],
-    // ✅ Allows storing additional dynamic fields
-}, { strict: false });
-// Ensure model is not compiled multiple times
-const User = mongoose_1.default.models.User || mongoose_1.default.model("User", UserSchema);
-exports.default = User;
+    resetTokenExpiry: { type: Date, default: null },
+};
+// ✅ Add dynamic fields based on the project
+if (PROJECT_TYPE === "connect") {
+    userSchemaFields.businessCards = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "BusinessCard" }];
+    userSchemaFields.contacts = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Contact" }];
+}
+else if (PROJECT_TYPE === "event-finder") {
+    userSchemaFields.events = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Event" }];
+    userSchemaFields.complaints = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Complaint" }];
+}
+const userSchema = new mongoose_1.Schema(userSchemaFields, { timestamps: true });
+const UserModel = mongoose_1.models.User || mongoose_1.default.model("User", userSchema);
+exports.default = UserModel;
