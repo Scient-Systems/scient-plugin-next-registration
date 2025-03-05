@@ -16,12 +16,12 @@
 ## **📖 Installation**  
 To install **Scient Plugin Next Registration**, run the following command:  
 ```sh
-npm install [scient-auth](https://github.com/Scient-Systems/scient-plugin-next-registration.git)
+npm install https://github.com/Scient-Systems/scient-plugin-next-registration.git
 ```
 
 or with Yarn:
 ```sh
-yarn add [scient-auth](https://github.com/Scient-Systems/scient-plugin-next-registration.git)
+yarn add https://github.com/Scient-Systems/scient-plugin-next-registration.git
 ```
 
 
