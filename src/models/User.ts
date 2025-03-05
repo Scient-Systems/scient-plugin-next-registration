@@ -10,14 +10,8 @@ interface IUser extends Document {
   verifyCode?: string;
   verifyCodeExpiry?: Date;
   resetToken?: string;
-  resetTokenExpiry?: Date;
-  
-  membership?: Types.ObjectId;
-  businessCards?: Types.ObjectId[];
-  contacts?: Types.ObjectId[];
+  resetTokenExpiry?: Date;  
   [key: string]: any;
-  events: Types.ObjectId[],
-  complaints: Types.ObjectId[],
 }
 
 const UserSchema = new Schema<IUser>({
