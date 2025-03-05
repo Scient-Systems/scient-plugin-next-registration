@@ -30,7 +30,7 @@ yarn add [scient-auth](https://github.com/Scient-Systems/scient-plugin-next-regi
 ### **1️⃣ Register a New User**  
 To register a user, call the `registerUser` function:  
 ```ts
-import { registerUser } from "scient-auth";
+import { registerUser } from "scient-plugin-next-registration";
 
 const register = async () => {
   const response = await registerUser(
@@ -65,7 +65,7 @@ Users receive a 6-digit OTP for email verification.
 Call `verifyUser` to verify their account:  
 
 ```ts
-import { verifyUser } from "scient-auth";
+import { verifyUser } from "scient-plugin-next-registration";
 
 const verify = async () => {
   const response = await verifyUser("johndoe", "123456"); // OTP sent via email
@@ -89,7 +89,7 @@ verify();
 If a user forgets their password, generate a reset link:  
 
 ```ts
-import { forgotPassword } from "scient-auth";
+import { forgotPassword } from "scient-plugin-next-registration";
 
 const forgot = async () => {
   const response = await forgotPassword("johndoe@example.com");
@@ -114,7 +114,7 @@ forgot();
 Once the user receives a reset link, they can update their password:  
 
 ```ts
-import { resetPassword } from "scient-auth";
+import { resetPassword } from "scient-plugin-next-registration";
 
 const reset = async () => {
   const response = await resetPassword("abcdef123456", "NewSecurePassword123");
@@ -138,7 +138,7 @@ reset();
 To log in and get a JWT token for authentication:  
 
 ```ts
-import { loginUser } from "scient-auth";
+import { loginUser } from "scient-plugin-next-registration";
 
 const login = async () => {
   const response = await loginUser("johndoe@example.com", "SecurePassword123");
