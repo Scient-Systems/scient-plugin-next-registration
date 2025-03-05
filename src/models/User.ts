@@ -15,7 +15,9 @@ interface IUser extends Document {
   membership?: Types.ObjectId;
   businessCards?: Types.ObjectId[];
   contacts?: Types.ObjectId[];
-  [key: string]: any; // ✅ Allows dynamic fields
+  [key: string]: any;
+  events: Types.ObjectId[],
+  complaints: Types.ObjectId[],
 }
 
 const UserSchema = new Schema<IUser>({
@@ -32,9 +34,10 @@ const UserSchema = new Schema<IUser>({
 
   // ✅ Explicitly define top-level fields
   membership: { type: Schema.Types.ObjectId, ref: "Membership" },
-  businessCards: { type: [Schema.Types.ObjectId], ref: "BusinessCard", default: [] },
-  contacts: { type: [Schema.Types.ObjectId], ref: "Contact", default: [] },
-
+  businessCards: { type: [Schema.Types.ObjectId], ref: "BusinessCard"},
+  contacts: { type: [Schema.Types.ObjectId], ref: "Contact" },
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
+  complaints: [{ type: mongoose.Schema.Types.ObjectId, ref: "Complaint" }],
   // ✅ Allows storing additional dynamic fields
 }, { strict: false });
 

@@ -47,8 +47,10 @@ const UserSchema = new mongoose_1.Schema({
     resetTokenExpiry: { type: Date },
     // ✅ Explicitly define top-level fields
     membership: { type: mongoose_1.Schema.Types.ObjectId, ref: "Membership" },
-    businessCards: { type: [mongoose_1.Schema.Types.ObjectId], ref: "BusinessCard", default: [] },
-    contacts: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Contact", default: [] },
+    businessCards: { type: [mongoose_1.Schema.Types.ObjectId], ref: "BusinessCard" },
+    contacts: { type: [mongoose_1.Schema.Types.ObjectId], ref: "Contact" },
+    events: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Event" }],
+    complaints: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Complaint" }],
     // ✅ Allows storing additional dynamic fields
 }, { strict: false });
 // Ensure model is not compiled multiple times
