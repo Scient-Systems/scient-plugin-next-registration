@@ -21,10 +21,9 @@ npm install [scient-auth](https://github.com/Scient-Systems/scient-plugin-next-r
 
 or with Yarn:
 ```sh
-yarn add [scient-auth
-](https://github.com/Scient-Systems/scient-plugin-next-registration.git)```
+yarn add [scient-auth](https://github.com/Scient-Systems/scient-plugin-next-registration.git)
+```
 
----
 
 ## **🚀 Usage Guide**  
 
@@ -169,7 +168,7 @@ Set up **environment variables** in a `.env` file:
 ```env
 JWT_SECRET=your_jwt_secret
 BASE_URL=https://yourapp.com
-EMAIL_SERVICE_API_KEY=your_smtp_api_key
+MONGODB_URI==your_database
 ```
 
 ---
