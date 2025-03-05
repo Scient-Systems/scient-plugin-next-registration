@@ -9,7 +9,7 @@ interface IUser extends Document {
   isVerified: boolean;
   verifyCode?: string;
   verifyCodeExpiry?: Date;
-  resetToken: string;
+  resetToken?: string;
   resetTokenExpiry?: Date;
   
   membership?: Types.ObjectId;
