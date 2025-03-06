@@ -100,7 +100,10 @@ export const verifyUser = async (userName: string, code: string) => {
     const decodedUsername = decodeURIComponent(userName);
 
     // Find the user by username
+    console.log(' decodedUsername',  decodedUsername)
     const user = await User.findOne({ userName: decodedUsername });
+    console.log('user', user)
+
     if (!user) {
       console.error("❌ User not found");
       return { success: false, message: "User not found." };

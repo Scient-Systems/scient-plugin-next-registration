@@ -82,7 +82,9 @@ const verifyUser = (userName, code) => __awaiter(void 0, void 0, void 0, functio
         }
         const decodedUsername = decodeURIComponent(userName);
         // Find the user by username
+        console.log(' decodedUsername', decodedUsername);
         const user = yield User_1.default.findOne({ userName: decodedUsername });
+        console.log('user', user);
         if (!user) {
             console.error("❌ User not found");
             return { success: false, message: "User not found." };
