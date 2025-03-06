@@ -134,7 +134,7 @@ const resetPassword = (token, newPassword) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.resetPassword = resetPassword;
-const forgotPassword = (email) => __awaiter(void 0, void 0, void 0, function* () {
+const forgotPassword = (email, url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, database_1.connectDB)();
         console.log("📧 Forgot Password Request:", { email });
@@ -149,7 +149,7 @@ const forgotPassword = (email) => __awaiter(void 0, void 0, void 0, function* ()
         user.resetToken = resetToken;
         user.resetTokenExpiry = resetTokenExpiry;
         yield user.save();
-        const resetLink = `${process.env.BASE_URL}/reset-password?token=${resetToken}`;
+        const resetLink = `${url}/reset-password?token=${resetToken}`;
         console.log("✅ Password reset email sent");
         return { success: true, message: "Password reset email sent.", resetLink };
     }

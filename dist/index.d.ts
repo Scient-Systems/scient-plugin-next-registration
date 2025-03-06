@@ -38,7 +38,7 @@ declare const _default: {
         message: string;
         error: any;
     }>;
-    forgotPassword: (email: string) => Promise<{
+    forgotPassword: (email: string, url: string) => Promise<{
         success: boolean;
         message: string;
         resetLink?: undefined;

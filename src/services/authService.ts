@@ -158,7 +158,7 @@ export const resetPassword = async (token: string, newPassword: string) => {
     return { success: false, message: "Error resetting password.", error: error.message };
   }
 };
-export const forgotPassword = async (email: string) => {
+export const forgotPassword = async (email: string ,url:string) => {
   try {
     await connectDB();
 
@@ -177,8 +177,8 @@ export const forgotPassword = async (email: string) => {
     user.resetToken = resetToken;
     user.resetTokenExpiry = resetTokenExpiry;
     await user.save();
-
-    const resetLink = `${process.env.BASE_URL}/reset-password?token=${resetToken}`;
+    
+    const resetLink = `${url}/reset-password?token=${resetToken}`;
 
     console.log("✅ Password reset email sent");
     return { success: true, message: "Password reset email sent." ,resetLink};

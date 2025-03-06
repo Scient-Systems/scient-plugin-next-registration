@@ -44,7 +44,7 @@ export declare const resetPassword: (token: string, newPassword: string) => Prom
     message: string;
     error: any;
 }>;
-export declare const forgotPassword: (email: string) => Promise<{
+export declare const forgotPassword: (email: string, url: string) => Promise<{
     success: boolean;
     message: string;
     resetLink?: undefined;
