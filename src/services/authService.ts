@@ -53,7 +53,7 @@ export const registerUser = async (
         }
 
         await existingUserByEmail.save();
-        return { success: true, message: "Verification code resent to email." };
+        return { success: true, message: "Verification code resent to email.",  verifyCode, userId:existingUserByEmail._id};
       }
     }
 

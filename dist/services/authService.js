@@ -51,7 +51,7 @@ const registerUser = (firstName, lastName, userName, email, password, extraField
                     Object.assign(existingUserByEmail, extraFields);
                 }
                 yield existingUserByEmail.save();
-                return { success: true, message: "Verification code resent to email." };
+                return { success: true, message: "Verification code resent to email.", verifyCode, userId: existingUserByEmail._id };
             }
         }
         // ✅ Create new user & spread `extraFields` correctly
