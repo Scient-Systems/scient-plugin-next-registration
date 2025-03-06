@@ -18,6 +18,8 @@ interface User extends Document {
   contacts?: mongoose.Types.ObjectId[];
   events?: mongoose.Types.ObjectId[];
   complaints?: mongoose.Types.ObjectId[];
+  customerId?: string;
+  plan?: "free" | "premium" | "pro";
 }
 
 const userSchemaFields: Record<string, any> = {
@@ -38,6 +40,8 @@ const userSchemaFields: Record<string, any> = {
 if (PROJECT_TYPE === "connect") {
   userSchemaFields.businessCards = [{ type: mongoose.Schema.Types.ObjectId, ref: "BusinessCard" }];
   userSchemaFields.contacts = [{ type: mongoose.Schema.Types.ObjectId, ref: "Contact" }];
+  userSchemaFields.customerId={ type: String, unique: true, sparse: true }, // Store Stripe Customer ID
+  userSchemaFields.plan={ type: String, enum: ["free", "premium", "pro"], default: "free" } // Subscription plan
 } else if (PROJECT_TYPE === "event-finder") {
   userSchemaFields.events = [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }];
   userSchemaFields.complaints = [{ type: mongoose.Schema.Types.ObjectId, ref: "Complaint" }];

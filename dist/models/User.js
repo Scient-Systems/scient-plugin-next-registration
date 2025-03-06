@@ -52,6 +52,8 @@ const userSchemaFields = {
 if (PROJECT_TYPE === "connect") {
     userSchemaFields.businessCards = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "BusinessCard" }];
     userSchemaFields.contacts = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Contact" }];
+    userSchemaFields.customerId = { type: String, unique: true, sparse: true }, // Store Stripe Customer ID
+        userSchemaFields.plan = { type: String, enum: ["free", "premium", "pro"], default: "free" }; // Subscription plan
 }
 else if (PROJECT_TYPE === "event-finder") {
     userSchemaFields.events = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Event" }];
