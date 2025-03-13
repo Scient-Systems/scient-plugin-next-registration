@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/User";
 import { connectDB } from "../config/database";
 import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
@@ -17,14 +16,14 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
  * @returns Success or failure response
  */
 
-
 export const registerUser = async (
+  UserModel: mongoose.Model<any>, // ✅ Accept User model as a parameter
   firstName: string,
   lastName: string,
   userName: string,
   email: string,
   password: string,
-  extraFields?: Record<string, any> // ✅ Accept dynamic fields
+  extraFields?: Record<string, any>
 ) => {
   try {
     console.log("📌 Received Data:", { firstName, lastName, userName, email, password, extraFields });
@@ -37,7 +36,7 @@ export const registerUser = async (
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     const verifyCodeExpiry = new Date(Date.now() + 3600000);
 
-    const existingUserByEmail = await User.findOne({ email });
+    const existingUserByEmail = await UserModel.findOne({ email });
 
     if (existingUserByEmail) {
       if (existingUserByEmail.isVerified) {
@@ -47,18 +46,16 @@ export const registerUser = async (
         existingUserByEmail.verifyCode = verifyCode;
         existingUserByEmail.verifyCodeExpiry = verifyCodeExpiry;
 
-        // ✅ Spread `extraFields` directly instead of nesting inside `extraFields`
         if (extraFields) {
           Object.assign(existingUserByEmail, extraFields);
         }
 
         await existingUserByEmail.save();
-        return { success: true, message: "Verification code resent to email.",  verifyCode, userId:existingUserByEmail._id};
+        return { success: true, message: "Verification code resent to email.", verifyCode, userId: existingUserByEmail._id };
       }
     }
 
-    // ✅ Create new user & spread `extraFields` correctly
-    const newUser = new User({
+    const newUser = new UserModel({
       firstName,
       lastName,
       userName,
@@ -69,7 +66,7 @@ export const registerUser = async (
       resetToken: "",
       resetTokenExpiry: verifyCodeExpiry,
       isVerified: false,
-      ...extraFields, // ✅ Now membership, businessCards, contacts will be direct fields
+      ...extraFields,
     });
 
     console.log("🟢 Saving User to MongoDB:", newUser);
@@ -82,53 +79,39 @@ export const registerUser = async (
   }
 };
 
-
-
-
-export const verifyUser = async (userName: string, code: string) => {
+export const verifyUser = async (UserModel: mongoose.Model<any>, userName: string, code: string) => {
   try {
-    // Connect to the database
     await connectDB();
-
     console.log("📌 Received Data:", { userName, code });
 
-    // Ensure required fields are provided
     if (!userName || !code) {
       console.error("❌ Missing required fields");
       return { success: false, message: "Username and code are required." };
     }
-    const decodedUsername = decodeURIComponent(userName);
 
-    // Find the user by username
-    console.log(' decodedUsername',  decodedUsername)
-    const user = await User.findOne({ userName: decodedUsername });
-    console.log('user', user)
+    const decodedUsername = decodeURIComponent(userName);
+    const user = await UserModel.findOne({ userName: decodedUsername });
 
     if (!user) {
       console.error("❌ User not found");
       return { success: false, message: "User not found." };
     }
 
-    // Check if the code is correct and not expired
     const isCodeValid = user.verifyCode === code;
     const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
 
     if (isCodeValid && isCodeNotExpired) {
       user.isVerified = true;
       await user.save();
-
       console.log("✅ Account verified successfully:", userName);
       return { success: true, message: "Account verified successfully!" };
-    } 
-    
+    }
+
     if (!isCodeNotExpired) {
       console.warn("⚠️ Verification code expired for:", userName);
-      return {
-        success: false,
-        message: "Verification code expired. Please request a new code.",
-      };
-    } 
-    
+      return { success: false, message: "Verification code expired. Please request a new code." };
+    }
+
     console.warn("⚠️ Incorrect verification code for:", userName);
     return { success: false, message: "Incorrect verification code." };
   } catch (error: any) {
@@ -137,21 +120,21 @@ export const verifyUser = async (userName: string, code: string) => {
   }
 };
 
-export const resetPassword = async (token: string, newPassword: string) => {
+
+export const resetPassword = async (UserModel: mongoose.Model<any>, token: string, newPassword: string) => {
   try {
     await connectDB();
-
     console.log("🔑 Reset Password Request:", { token, newPassword });
-    const user = await User.findOne({ resetToken: token });
+
+    const user = await UserModel.findOne({ resetToken: token });
     if (!user || new Date(user.resetTokenExpiry) < new Date()) {
       console.error("❌ Invalid or expired reset token");
       return { success: false, message: "Invalid or expired reset token." };
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
     user.password = hashedPassword;
-    user.resetToken = uuidv4(); 
+    user.resetToken = uuidv4();
     await user.save();
 
     console.log("✅ Password reset successfully");
@@ -161,13 +144,13 @@ export const resetPassword = async (token: string, newPassword: string) => {
     return { success: false, message: "Error resetting password.", error: error.message };
   }
 };
-export const forgotPassword = async (email: string ,url:string) => {
+
+export const forgotPassword = async (UserModel: mongoose.Model<any>, email: string, url: string) => {
   try {
     await connectDB();
-
     console.log("📧 Forgot Password Request:", { email });
 
-    const user = await User.findOne({ email });
+    const user = await UserModel.findOne({ email });
     if (!user) {
       console.error("❌ User not found");
       return { success: false, message: "User not found." };
@@ -180,13 +163,13 @@ export const forgotPassword = async (email: string ,url:string) => {
     user.resetToken = resetToken;
     user.resetTokenExpiry = resetTokenExpiry;
     await user.save();
-    
-    const resetLink = `${url}/reset-password?token=${resetToken}`;
 
+    const resetLink = `${url}/reset-password?token=${resetToken}`;
     console.log("✅ Password reset email sent");
-    return { success: true, message: "Password reset email sent." ,resetLink};
+    return { success: true, message: "Password reset email sent.", resetLink };
   } catch (error: any) {
     console.error("❌ Error in Forgot Password:", error);
     return { success: false, message: "Internal server error", error: error.message };
   }
 };
+
