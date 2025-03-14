@@ -47,4 +47,4 @@ const UserSchema = new mongoose_1.Schema({
     isVerified: { type: Boolean, default: false },
 });
 // Export the typed model
-exports.UserModel = mongoose_1.default.model("User", UserSchema);
+exports.UserModel = mongoose_1.default.models.User || mongoose_1.default.model("User", UserSchema);

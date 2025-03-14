@@ -8,7 +8,7 @@ export declare const registerUser: (firstName: string, lastName: string, userNam
     success: boolean;
     message: string;
     verifyCode: string;
-    userId: unknown;
+    userId: any;
     error?: undefined;
 } | {
     success: boolean;
@@ -59,11 +59,7 @@ export declare const updateUserFields: (userId: string, extraFields: Record<stri
 } | {
     success: boolean;
     message: string;
-    user: import("mongoose").Document<unknown, {}, import("./../../../models/schemas/UserSchema").IUser> & import("./../../../models/schemas/UserSchema").IUser & Required<{
-        _id: unknown;
-    }> & {
-        __v: number;
-    };
+    user: any;
     error?: undefined;
 } | {
     success: boolean;
