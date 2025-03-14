@@ -1,6 +1,4 @@
 import { Complaint } from "../models/classes/ComplainClass";
-
-// Base User Interface
 export interface BaseUser {
     userId: string;
     firstName: string;
@@ -9,32 +7,28 @@ export interface BaseUser {
     email: string;
     password: string;
     role: string;
-    isVerified:Boolean;
+    isVerified: Boolean;
     verificationId: string;
-  }
-  
-  export interface UserVerificationInterface {
+}
+export interface UserVerificationInterface {
     isVerified: boolean;
     verifyCode?: string;
     verifyCodeExpiry?: Date;
     resetToken?: string;
     resetTokenExpiry?: Date;
-  }
-  
-  export interface ConnectUser extends BaseUser {
+}
+export interface ConnectUser extends BaseUser {
     businessCards: string[];
     contacts: string[];
     plan: string;
     customerId?: string;
-  }
-  
-  export interface EventFinderUser extends BaseUser {
+}
+export interface EventFinderUser extends BaseUser {
     events: EVENT[];
     complaints: Complaint[];
     review?: string[];
-  }
-  
-  export interface EVENT {
+}
+export interface EVENT {
     eventId: string;
     eventName: string;
     eventVenue: string;
@@ -53,4 +47,4 @@ export interface BaseUser {
     eventLink: string;
     eventDate: Date;
     complaints?: Complaint[];
-  }
+}

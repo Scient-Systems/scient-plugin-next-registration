@@ -1,15 +1,19 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { UserVerification } from "../classes/UserVerificationClass";
 
-const UserVerificationSchema = new Schema<UserVerification & Document>({
-  isVerified: { type: Boolean, default: false },
-  verifyCode: { type: String },
+interface IUserVerification extends Document {
+  userId: mongoose.Schema.Types.ObjectId; // Reference to User
+  verifyCode: string;
+  verifyCodeExpiry: Date;
+  resetToken?: string;
+  resetTokenExpiry?: Date;
+}
+
+const UserVerificationSchema = new Schema<IUserVerification>({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  verifyCode: { type: String, required: true },
   verifyCodeExpiry: { type: Date },
-  resetToken: { type: String },
-  resetTokenExpiry: { type: Date },
+  resetToken: { type: String, default: null },
+  resetTokenExpiry: { type: Date, default: null },
 });
 
-export const UserVerificationModel = mongoose.model<UserVerification & Document>(
-  "UserVerification",
-  UserVerificationSchema
-);
+export const UserVerificationModel = mongoose.model<IUserVerification>("UserVerification", UserVerificationSchema);
