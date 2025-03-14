@@ -7,8 +7,7 @@
 ## **📌 Features**  
 ✅ User Registration  
 ✅ Email Verification with OTP  
-✅ Secure Password Hashing  
-✅ JWT-Based Authentication  
+✅ Secure Password Hashing    
 ✅ Forgot & Reset Password  
 
 ---
@@ -25,194 +24,84 @@ yarn add https://github.com/Scient-Systems/scient-plugin-next-registration.git
 ```
 
 
-## **🚀 Usage Guide**  
 
-### **1️⃣ Register a New User**  
-To register a user, call the `registerUser` function:  
+### **2. Set Up Environment Variables**  
+Create a `.env.local` file in your Next.js project and define your database settings:
+
+```ini
+# Choose database type: "mongo" or "supabase"
+DATA_STORE=mongo 
+
+# MongoDB Config
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+# Supabase Config
+SUPABASE_URL=https://your-supabase-url
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+---
+
+## 🔧 **Usage**  
+
+### **1. Import the Factory**
 ```ts
-import { registerUser } from "scient-plugin-next-registration";
+import { UserRepositoryFactory } from "scient-plugin-next-registration";
 
-const register = async () => {
-  const response = await registerUser(
-    "John",
-    "Doe",
-    "johndoe",
-    "johndoe@example.com",
-    "SecurePassword123",
-    { membership: "Free", businessCards: [], contacts: [] } // Optional extra fields
-  );
-
-  console.log(response);
-};
-
-register();
+const userRepo = UserRepositoryFactory.create();
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "User registered successfully!",
-  "verifyCode": "123456",
-  "userId": "65f2a7b1a2c7e3f9f0d3b8e2"
-}
-```
-
----
-
-### **2️⃣ Verify User Email**  
-Users receive a 6-digit OTP for email verification.  
-Call `verifyUser` to verify their account:  
-
+### **2. Register a User**
 ```ts
-import { verifyUser } from "scient-plugin-next-registration";
+const response = await userRepo.registerUser(
+  "John",
+  "Doe",
+  "johndoe",
+  "johndoe@example.com",
+  "securepassword123"
+);
 
-const verify = async () => {
-  const response = await verifyUser("johndoe", "123456"); // OTP sent via email
-  console.log(response);
-};
-
-verify();
+console.log(response);
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Account verified successfully!"
-}
-```
-
----
-
-### **3️⃣ Forgot Password (Request Reset Link)**  
-If a user forgets their password, generate a reset link:  
-
+### **3. Verify a User**
 ```ts
-import { forgotPassword } from "scient-plugin-next-registration";
-
-const forgot = async () => {
-  const response = await forgotPassword("johndoe@example.com");
-  console.log(response);
-};
-
-forgot();
+const response = await userRepo.verifyUser("johndoe", "123456"); // Use the code sent to the user
+console.log(response);
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Password reset email sent.",
-  "resetLink": "https://yourapp.com/reset-password?token=abcdef123456"
-}
-```
-
----
-
-### **4️⃣ Reset Password**  
-Once the user receives a reset link, they can update their password:  
-
+### **4. Forgot Password**
 ```ts
-import { resetPassword } from "scient-plugin-next-registration";
-
-const reset = async () => {
-  const response = await resetPassword("abcdef123456", "NewSecurePassword123");
-  console.log(response);
-};
-
-reset();
+const response = await userRepo.forgotPassword("johndoe@example.com", "https://yourwebsite.com");
+console.log(response);
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Password reset successfully."
-}
-```
-
----
-
-### **5️⃣ Authenticate User with JWT (Login)**  
-To log in and get a JWT token for authentication:  
-
+### **5. Reset Password**
 ```ts
-import { loginUser } from "scient-plugin-next-registration";
-
-const login = async () => {
-  const response = await loginUser("johndoe@example.com", "SecurePassword123");
-  console.log(response);
-};
-
-login();
+const response = await userRepo.resetPassword("reset-token-from-email", "newsecurepassword");
+console.log(response);
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "65f2a7b1a2c7e3f9f0d3b8e2",
-    "email": "johndoe@example.com",
-    "userName": "johndoe"
-  }
-}
-```
-
-
-## **⚙️ Configuration**  
-
-Set up **environment variables** in a `.env` file:  
-```env
-JWT_SECRET=your_jwt_secret
-BASE_URL=https://yourapp.com
-MONGODB_URI==your_database
+### **6. Update User Fields**
+```ts
+const response = await userRepo.updateUserFields("userId", { age: 25, country: "USA" });
+console.log(response);
 ```
 
 ---
 
-## **📌 Full API Reference**  
-
-### **registerUser()**
-Registers a new user.  
-**Parameters:**  
-- `firstName` (string)  
-- `lastName` (string)  
-- `userName` (string)  
-- `email` (string)  
-- `password` (string)  
-- `extraFields` (optional object)  
-
-### **verifyUser()**
-Verifies an account using an OTP code.  
-**Parameters:**  
-- `userName` (string)  
-- `code` (string)  
-
-### **forgotPassword()**
-Sends a password reset link.  
-**Parameters:**  
-- `email` (string)  
-
-### **resetPassword()**
-Resets the user's password.  
-**Parameters:**  
-- `token` (string)  
-- `newPassword` (string)  
-
-### **loginUser()**
-Authenticates a user and returns a JWT token.  
-**Parameters:**  
-- `email` (string)  
-- `password` (string)  
-
-### **authenticateJWT()**
-Middleware for protected routes.  
+## ⚙️ **How It Works**
+- The package detects the `DB_TYPE` from environment variables.
+- If `DATA_STORE=mongo`, it uses **MongoDB** (`mongoose`).
+- If `DATA_STORE=supabase`, it uses **Supabase** (`@supabase/supabase-js`).
+- User data and verification codes are stored in the appropriate database.
+- Passwords are hashed using **bcryptjs** before saving.
 
 ---
 
+
+This **README.md** gives clear instructions for installing, configuring, and using the package. Let me know if you need any modifications! 🚀
 ## **💡 Contributing**
 Feel free to submit issues and pull requests.  
 
