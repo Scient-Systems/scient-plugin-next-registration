@@ -1,58 +1,12 @@
-export { default as User } from "./models/User";
-export { registerUser, verifyUser, resetPassword, forgotPassword } from "./services/authService";
+import { UserModel } from "./models/schemas/UserSchema";
+import { UserRepositoryFactory } from "./repositories/UserRepositoryFactory";
+import { UserVerification } from "./models/classes/UserVerificationClass";
+import { connectDB } from "./config/database";
+export { UserRepositoryFactory } from "./repositories/UserRepositoryFactory";
+export { connectDB } from "./config/database";
 declare const _default: {
-    registerUser: (firstName: string, lastName: string, userName: string, email: string, password: string, extraFields?: Record<string, any>) => Promise<{
-        success: boolean;
-        message: string;
-        verifyCode?: undefined;
-        userId?: undefined;
-        error?: undefined;
-    } | {
-        success: boolean;
-        message: string;
-        verifyCode: string;
-        userId: any;
-        error?: undefined;
-    } | {
-        success: boolean;
-        message: string;
-        error: any;
-        verifyCode?: undefined;
-        userId?: undefined;
-    }>;
-    verifyUser: (userName: string, code: string) => Promise<{
-        success: boolean;
-        message: string;
-        error?: undefined;
-    } | {
-        success: boolean;
-        message: string;
-        error: any;
-    }>;
-    resetPassword: (token: string, newPassword: string) => Promise<{
-        success: boolean;
-        message: string;
-        error?: undefined;
-    } | {
-        success: boolean;
-        message: string;
-        error: any;
-    }>;
-    forgotPassword: (email: string, url: string) => Promise<{
-        success: boolean;
-        message: string;
-        resetLink?: undefined;
-        error?: undefined;
-    } | {
-        success: boolean;
-        message: string;
-        resetLink: string;
-        error?: undefined;
-    } | {
-        success: boolean;
-        message: string;
-        error: any;
-        resetLink?: undefined;
-    }>;
+    UserRepositoryFactory: typeof UserRepositoryFactory;
+    connectDB: typeof connectDB;
 };
 export default _default;
+export { UserModel, UserVerification };

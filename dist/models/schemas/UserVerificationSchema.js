@@ -33,32 +33,13 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserVerificationModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const PROJECT_TYPE = process.env.PROJECT_TYPE || "event-finder"; // Default to event-finder
-const userSchemaFields = {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    userName: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: { type: String, required: true, default: "user" },
-    isVerified: { type: Boolean, default: false },
-    verifyCode: { type: String },
+const UserVerificationSchema = new mongoose_1.Schema({
+    userId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", required: true },
+    verifyCode: { type: String, required: true },
     verifyCodeExpiry: { type: Date },
-    resetToken: { type: String, default: "" },
+    resetToken: { type: String, default: null },
     resetTokenExpiry: { type: Date, default: null },
-};
-// ✅ Add dynamic fields based on the project
-if (PROJECT_TYPE === "connect") {
-    userSchemaFields.businessCards = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "BusinessCard" }];
-    userSchemaFields.contacts = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Contact" }];
-    userSchemaFields.customerId = { type: String, unique: true, sparse: true }, // Store Stripe Customer ID
-        userSchemaFields.plan = { type: String, enum: ["free", "premium", "pro"], default: "free" }; // Subscription plan
-}
-else if (PROJECT_TYPE === "event-finder") {
-    userSchemaFields.events = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Event" }];
-    userSchemaFields.complaints = [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Complaint" }];
-}
-const userSchema = new mongoose_1.Schema(userSchemaFields, { timestamps: true });
-const UserModel = mongoose_1.models.User || mongoose_1.default.model("User", userSchema);
-exports.default = UserModel;
+});
+exports.UserVerificationModel = mongoose_1.default.model("UserVerification", UserVerificationSchema);

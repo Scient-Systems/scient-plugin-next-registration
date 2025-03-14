@@ -1,15 +1,14 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.forgotPassword = exports.resetPassword = exports.verifyUser = exports.registerUser = exports.User = void 0;
-const authService_1 = require("./services/authService");
-var User_1 = require("./models/User"); // ✅ Export User Model
-Object.defineProperty(exports, "User", { enumerable: true, get: function () { return __importDefault(User_1).default; } });
-var authService_2 = require("./services/authService");
-Object.defineProperty(exports, "registerUser", { enumerable: true, get: function () { return authService_2.registerUser; } });
-Object.defineProperty(exports, "verifyUser", { enumerable: true, get: function () { return authService_2.verifyUser; } });
-Object.defineProperty(exports, "resetPassword", { enumerable: true, get: function () { return authService_2.resetPassword; } });
-Object.defineProperty(exports, "forgotPassword", { enumerable: true, get: function () { return authService_2.forgotPassword; } });
-exports.default = { registerUser: authService_1.registerUser, verifyUser: authService_1.verifyUser, resetPassword: authService_1.resetPassword, forgotPassword: authService_1.forgotPassword };
+exports.UserVerification = exports.UserModel = exports.connectDB = exports.UserRepositoryFactory = void 0;
+const UserSchema_1 = require("./models/schemas/UserSchema");
+Object.defineProperty(exports, "UserModel", { enumerable: true, get: function () { return UserSchema_1.UserModel; } });
+const UserRepositoryFactory_1 = require("./repositories/UserRepositoryFactory");
+const UserVerificationClass_1 = require("./models/classes/UserVerificationClass");
+Object.defineProperty(exports, "UserVerification", { enumerable: true, get: function () { return UserVerificationClass_1.UserVerification; } });
+const database_1 = require("./config/database");
+var UserRepositoryFactory_2 = require("./repositories/UserRepositoryFactory");
+Object.defineProperty(exports, "UserRepositoryFactory", { enumerable: true, get: function () { return UserRepositoryFactory_2.UserRepositoryFactory; } });
+var database_2 = require("./config/database");
+Object.defineProperty(exports, "connectDB", { enumerable: true, get: function () { return database_2.connectDB; } });
+exports.default = { UserRepositoryFactory: UserRepositoryFactory_1.UserRepositoryFactory, connectDB: database_1.connectDB };

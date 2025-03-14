@@ -1,4 +1,21 @@
-import {  registerUser, verifyUser, resetPassword, forgotPassword } from "./services/authService";
-export { default as User } from "./models/User"; // ✅ Export User Model
-export { registerUser, verifyUser, resetPassword, forgotPassword } from "./services/authService";
-export default { registerUser, verifyUser, resetPassword, forgotPassword}
+
+import { UserModel } from "./models/schemas/UserSchema";
+import { UserRepositoryFactory } from "./repositories/UserRepositoryFactory";
+import { UserVerification } from "./models/classes/UserVerificationClass";
+import { connectDB } from "./config/database";
+
+export {
+  UserRepositoryFactory
+} from "./repositories/UserRepositoryFactory"
+
+export {
+  connectDB
+} from "./config/database"
+export default { UserRepositoryFactory ,connectDB}
+
+export {
+
+  UserModel,
+  UserVerification
+  
+}
