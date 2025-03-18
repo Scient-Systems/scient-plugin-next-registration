@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoUserRepository = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const uuid_1 = require("uuid");
-const UserSchema_1 = require("../../models/schemas/UserSchema");
 const UserVerificationSchema_1 = require("../../models/schemas/UserVerificationSchema");
 const database_1 = require("../../config/database");
 class MongoUserRepository {
     updateUserFields(userId, extraFields) {
-        throw new Error("Method not implemented.");
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error("Method not implemented.");
+        });
     }
-    registerUser(firstName, lastName, userName, email, password, extraFields) {
+    registerUser(firstName, lastName, userName, email, password, UserModel, extraFields) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log("📌 Received Data:", { firstName, lastName, userName, email, password, extraFields });
@@ -30,7 +31,7 @@ class MongoUserRepository {
                     return { success: false, message: "All fields are required." };
                 }
                 yield (0, database_1.connectDB)();
-                const existingUser = yield UserSchema_1.UserModel.findOne({ email });
+                const existingUser = yield UserModel.findOne({ email });
                 if (existingUser) {
                     return { success: false, message: "Email already registered." };
                 }
@@ -38,7 +39,7 @@ class MongoUserRepository {
                 const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
                 const verifyCodeExpiry = new Date(Date.now() + 3600000);
                 // Create new user
-                const newUser = new UserSchema_1.UserModel(Object.assign({ firstName,
+                const newUser = new UserModel(Object.assign({ firstName,
                     lastName,
                     userName,
                     email, password: hashedPassword, isVerified: false }, extraFields));
@@ -63,9 +64,9 @@ class MongoUserRepository {
             }
         });
     }
-    verifyUser(userName, code) {
+    verifyUser(userName, code, UserModel) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield UserSchema_1.UserModel.findOne({ userName });
+            const user = yield UserModel.findOne({ userName });
             if (!user)
                 return { success: false, message: "User not found." };
             const verification = yield UserVerificationSchema_1.UserVerificationModel.findOne({ userId: user._id });
@@ -77,9 +78,9 @@ class MongoUserRepository {
             return { success: true, message: "Account verified!" };
         });
     }
-    forgotPassword(email, url) {
+    forgotPassword(email, url, UserModel) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield UserSchema_1.UserModel.findOne({ email });
+            const user = yield UserModel.findOne({ email });
             if (!user)
                 return { success: false, message: "User not found." };
             const resetToken = (0, uuid_1.v4)();
@@ -98,13 +99,13 @@ class MongoUserRepository {
             return { success: true, message: "Password reset link sent.", resetLink };
         });
     }
-    resetPassword(token, newPassword) {
+    resetPassword(token, newPassword, UserModel) {
         return __awaiter(this, void 0, void 0, function* () {
             const verification = yield UserVerificationSchema_1.UserVerificationModel.findOne({ resetToken: token });
             if (!verification) {
                 return { success: false, message: "Invalid or expired reset token." };
             }
-            const user = yield UserSchema_1.UserModel.findById(verification.userId);
+            const user = yield UserModel.findById(verification.userId);
             if (!user)
                 return { success: false, message: "User not found." };
             user.password = yield bcryptjs_1.default.hash(newPassword, 10);
