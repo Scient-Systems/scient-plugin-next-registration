@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
-import { UserModel } from "../../models/schemas/UserSchema";
 import { UserVerificationModel } from "../../models/schemas/UserVerificationSchema";
 import { IUserRepository } from "../IUserRepository";
 import { connectDB } from "../../config/database";
+import mongoose from "mongoose";
 
 export class MongoUserRepository implements IUserRepository {
-    updateUserFields(userId: string, extraFields: Record<string, any>): Promise<{ success: boolean; message: string; user: any; }> {
+  async  updateUserFields(userId: string, extraFields: Record<string, any>): Promise<{ success: boolean; message: string; user: any; }> {
         throw new Error("Method not implemented.");
     }
     async registerUser(
@@ -15,7 +15,8 @@ export class MongoUserRepository implements IUserRepository {
         userName: string,
         email: string,
         password: string,
-        extraFields?: Record<string, any>
+        UserModel: mongoose.Model<any>,
+        extraFields?: Record<string, any>,
       ): Promise<{ success: boolean; message: string; userId?: any; verifyCode?: string }> {
         try {
           console.log("📌 Received Data:", { firstName, lastName, userName, email, password, extraFields });
@@ -69,7 +70,7 @@ export class MongoUserRepository implements IUserRepository {
           return { success: false, message: "An error occurred."};
         }
       }
-  async verifyUser(userName:string, code:string) {
+  async verifyUser(userName:string, code:string , UserModel: mongoose.Model<any>) {
     const user = await UserModel.findOne({ userName });
     if (!user) return { success: false, message: "User not found." };
 
@@ -83,7 +84,7 @@ export class MongoUserRepository implements IUserRepository {
     return { success: true, message: "Account verified!" };
   }
 
-  async forgotPassword(email:string, url:string) {
+  async forgotPassword(email:string, url:string, UserModel: mongoose.Model<any> ){
     const user = await UserModel.findOne({ email });
     if (!user) return { success: false, message: "User not found." };
 
@@ -104,7 +105,7 @@ export class MongoUserRepository implements IUserRepository {
     return { success: true, message: "Password reset link sent.", resetLink };
   }
 
-  async resetPassword(token:string, newPassword:string) {
+  async resetPassword(token:string, newPassword:string , UserModel: mongoose.Model<any>) {
     const verification = await UserVerificationModel.findOne({ resetToken: token });
     if (!verification ) {
       return { success: false, message: "Invalid or expired reset token." };

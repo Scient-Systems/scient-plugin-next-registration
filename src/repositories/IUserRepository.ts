@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface IUserRepository {
     registerUser(
       firstName: string,
@@ -5,14 +7,16 @@ export interface IUserRepository {
       userName: string,
       email: string,
       password: string,
-      extraFields?: Record<string, any>
+      UserModel: mongoose.Model<any>,
+      extraFields?: Record<string, any>,
+     
     ): Promise<{ success: boolean; message: string; userId?: string; verifyCode?: string }>;
     
-    verifyUser(userName: string, code: string): Promise<{ success: boolean; message: string }>;
+    verifyUser(userName: string, code: string ,UserModel: mongoose.Model<any> ): Promise<{ success: boolean; message: string }>;
   
-    forgotPassword(email: string, url: string): Promise<{ success: boolean; message: string; resetLink?: string }>;
+    forgotPassword(email: string, url: string ,UserModel: mongoose.Model<any>): Promise<{ success: boolean; message: string; resetLink?: string }>;
   
-    resetPassword(token: string, newPassword: string): Promise<{ success: boolean; message: string }>;
+    resetPassword(token: string, newPassword: string,UserModel: mongoose.Model<any>): Promise<{ success: boolean; message: string }>;
 
     updateUserFields(userId: string, extraFields: Record<string, any>): Promise<{ success: boolean; message: string ; user:any }>;
   }
