@@ -16,4 +16,4 @@ const UserVerificationSchema = new Schema<IUserVerification>({
   resetTokenExpiry: { type: Date, default: null },
 });
 
-export const UserVerificationModel = mongoose.model<IUserVerification>("UserVerification", UserVerificationSchema);
+export const UserVerificationModel =mongoose.models.UserVerification ||  mongoose.model<IUserVerification>("UserVerification", UserVerificationSchema);
