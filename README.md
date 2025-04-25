@@ -6,8 +6,7 @@
 
 ## **📌 Features**  
 ✅ User Registration  
-✅ Email Verification with OTP  
-✅ Secure Password Hashing    
+✅ Email Verification with OTP    
 ✅ Forgot & Reset Password  
 
 ---
