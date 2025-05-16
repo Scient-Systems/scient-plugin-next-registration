@@ -42,4 +42,4 @@ const UserVerificationSchema = new mongoose_1.Schema({
     resetToken: { type: String, default: null },
     resetTokenExpiry: { type: Date, default: null },
 });
-exports.UserVerificationModel = mongoose_1.default.model("UserVerification", UserVerificationSchema);
+exports.UserVerificationModel = mongoose_1.default.models.UserVerification || mongoose_1.default.model("UserVerification", UserVerificationSchema);
