@@ -4,6 +4,7 @@ import { UserRepositoryFactory } from "./repositories/UserRepositoryFactory";
 import { UserVerification } from "./models/classes/UserVerificationClass";
 import { connectDB } from "./config/database";
 import { IUser } from "./models/schemas/UserSchema";
+import { UserVerificationModel} from "./models/schemas/UserVerificationSchema";
 export {
   UserRepositoryFactory
 } from "./repositories/UserRepositoryFactory"
@@ -18,8 +19,6 @@ export {
   UserModel,
   UserVerification,
   IUser,
+  UserVerificationModel
  
-  
 }
-// In scient-plugin-next-registration/index.ts
-export { UserVerificationModel } from "./models/schemas/UserVerificationSchema";

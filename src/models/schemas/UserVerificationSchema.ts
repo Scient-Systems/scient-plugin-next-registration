@@ -19,3 +19,4 @@ const UserVerificationSchema = new Schema<IUserVerification>({
 
 
 export const UserVerificationModel = mongoose.models.UserVerification || mongoose.model("UserVerification",UserVerificationSchema );
+
