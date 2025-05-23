@@ -7,10 +7,11 @@ const UserRepositoryFactory_1 = require("./repositories/UserRepositoryFactory");
 const UserVerificationClass_1 = require("./models/classes/UserVerificationClass");
 Object.defineProperty(exports, "UserVerification", { enumerable: true, get: function () { return UserVerificationClass_1.UserVerification; } });
 const database_1 = require("./config/database");
-const UserVerificationSchema_1 = require("./models/schemas/UserVerificationSchema");
-Object.defineProperty(exports, "UserVerificationModel", { enumerable: true, get: function () { return UserVerificationSchema_1.UserVerificationModel; } });
 var UserRepositoryFactory_2 = require("./repositories/UserRepositoryFactory");
 Object.defineProperty(exports, "UserRepositoryFactory", { enumerable: true, get: function () { return UserRepositoryFactory_2.UserRepositoryFactory; } });
 var database_2 = require("./config/database");
 Object.defineProperty(exports, "connectDB", { enumerable: true, get: function () { return database_2.connectDB; } });
 exports.default = { UserRepositoryFactory: UserRepositoryFactory_1.UserRepositoryFactory, connectDB: database_1.connectDB };
+// In scient-plugin-next-registration/index.ts
+var UserVerificationSchema_1 = require("./models/schemas/UserVerificationSchema");
+Object.defineProperty(exports, "UserVerificationModel", { enumerable: true, get: function () { return UserVerificationSchema_1.UserVerificationModel; } });
