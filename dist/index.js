@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserVerification = exports.UserModel = exports.connectDB = exports.UserRepositoryFactory = void 0;
+exports.UserVerificationModel = exports.UserVerification = exports.UserModel = exports.connectDB = exports.UserRepositoryFactory = void 0;
 const UserSchema_1 = require("./models/schemas/UserSchema");
 Object.defineProperty(exports, "UserModel", { enumerable: true, get: function () { return UserSchema_1.UserModel; } });
 const UserRepositoryFactory_1 = require("./repositories/UserRepositoryFactory");
 const UserVerificationClass_1 = require("./models/classes/UserVerificationClass");
 Object.defineProperty(exports, "UserVerification", { enumerable: true, get: function () { return UserVerificationClass_1.UserVerification; } });
 const database_1 = require("./config/database");
+const UserVerificationSchema_1 = require("./models/schemas/UserVerificationSchema");
+Object.defineProperty(exports, "UserVerificationModel", { enumerable: true, get: function () { return UserVerificationSchema_1.UserVerificationModel; } });
 var UserRepositoryFactory_2 = require("./repositories/UserRepositoryFactory");
 Object.defineProperty(exports, "UserRepositoryFactory", { enumerable: true, get: function () { return UserRepositoryFactory_2.UserRepositoryFactory; } });
 var database_2 = require("./config/database");

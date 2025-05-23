@@ -4,6 +4,7 @@ import { UserRepositoryFactory } from "./repositories/UserRepositoryFactory";
 import { UserVerification } from "./models/classes/UserVerificationClass";
 import { connectDB } from "./config/database";
 import { IUser } from "./models/schemas/UserSchema";
+import { UserVerificationModel } from "./models/schemas/UserVerificationSchema";
 
 export {
   UserRepositoryFactory
@@ -18,6 +19,7 @@ export {
 
   UserModel,
   UserVerification,
-  IUser
+  IUser,
+  UserVerificationModel
   
 }
