@@ -9,15 +9,16 @@ export class MongoUserRepository implements IUserRepository {
   async  updateUserFields(userId: string, extraFields: Record<string, any>): Promise<{ success: boolean; message: string; user: any; }> {
         throw new Error("Method not implemented.");
     }
-    async registerUser(
-        firstName: string,
-        lastName: string,
-        userName: string,
-        email: string,
-        password: string,
-        UserModel: mongoose.Model<any>,
-        extraFields?: Record<string, any>,
-      ): Promise<{ success: boolean; message: string; userId?: any; verifyCode?: string }> {
+async registerUser(
+  firstName: string,
+  lastName: string,
+  userName: string,
+  email: string,
+  password: string,
+  UserModel: mongoose.Model<any>,
+  extraFields?: Record<string, any>,
+): Promise<{ success: boolean; message: string; userId?: any; verifyCode?: string; verifyCodeExpiry?: Date }> {
+
         try {
           console.log("📌 Received Data:", { firstName, lastName, userName, email, password, extraFields });
     
@@ -62,7 +63,9 @@ export class MongoUserRepository implements IUserRepository {
             success: true, 
             message: "User registered successfully!", 
             userId:  userVerification.userId,
-            verifyCode 
+            verifyCode,
+            verifyCodeExpiry,
+            
           };
           
         } catch (error: any) {

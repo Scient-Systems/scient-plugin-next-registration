@@ -11,6 +11,7 @@ export declare class MongoUserRepository implements IUserRepository {
         message: string;
         userId?: any;
         verifyCode?: string;
+        verifyCodeExpiry?: Date;
     }>;
     verifyUser(userName: string, code: string, UserModel: mongoose.Model<any>): Promise<{
         success: boolean;

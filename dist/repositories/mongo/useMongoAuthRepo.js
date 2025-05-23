@@ -55,7 +55,8 @@ class MongoUserRepository {
                     success: true,
                     message: "User registered successfully!",
                     userId: userVerification.userId,
-                    verifyCode
+                    verifyCode,
+                    verifyCodeExpiry,
                 };
             }
             catch (error) {

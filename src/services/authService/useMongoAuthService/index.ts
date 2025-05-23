@@ -52,7 +52,7 @@ export const registerUser = async (
 
     await userVerification.save();
 
-    return { success: true, message: "User registered successfully!", verifyCode, userId: newUser._id,verifyCodeExpiry };
+    return { success: true, message: "User registered successfully!", verifyCode, userId: newUser._id,verifyCodeExpiry:verifyCodeExpiry };
   } catch (error: any) {
     console.error("❌ Error registering user:", error);
     return { success: false, message: "An error occurred.", error: error.message };

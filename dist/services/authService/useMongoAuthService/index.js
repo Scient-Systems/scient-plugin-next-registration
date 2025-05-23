@@ -45,7 +45,7 @@ const registerUser = (firstName, lastName, userName, email, password, extraField
             verifyCodeExpiry,
         });
         yield userVerification.save();
-        return { success: true, message: "User registered successfully!", verifyCode, userId: newUser._id };
+        return { success: true, message: "User registered successfully!", verifyCode, userId: newUser._id, verifyCodeExpiry: verifyCodeExpiry };
     }
     catch (error) {
         console.error("❌ Error registering user:", error);

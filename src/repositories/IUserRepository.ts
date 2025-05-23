@@ -10,7 +10,7 @@ export interface IUserRepository {
       UserModel: mongoose.Model<any>,
       extraFields?: Record<string, any>,
      
-    ): Promise<{ success: boolean; message: string; userId?: string; verifyCode?: string }>;
+   ): Promise<{ success: boolean; message: string; userId?: any; verifyCode?: string; verifyCodeExpiry?: Date }>
     
     verifyUser(userName: string, code: string ,UserModel: mongoose.Model<any> ): Promise<{ success: boolean; message: string }>;
   

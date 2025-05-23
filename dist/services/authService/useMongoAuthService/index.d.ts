@@ -3,12 +3,14 @@ export declare const registerUser: (firstName: string, lastName: string, userNam
     message: string;
     verifyCode?: undefined;
     userId?: undefined;
+    verifyCodeExpiry?: undefined;
     error?: undefined;
 } | {
     success: boolean;
     message: string;
     verifyCode: string;
     userId: any;
+    verifyCodeExpiry: Date;
     error?: undefined;
 } | {
     success: boolean;
@@ -16,6 +18,7 @@ export declare const registerUser: (firstName: string, lastName: string, userNam
     error: any;
     verifyCode?: undefined;
     userId?: undefined;
+    verifyCodeExpiry?: undefined;
 }>;
 export declare const verifyUser: (userName: any, code: any) => Promise<{
     success: boolean;
